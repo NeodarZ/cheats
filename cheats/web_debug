@@ -1,0 +1,2 @@
+# Web redirection testing with wget
+wget -O/dev/null --no-check-certificate http://noria.lan/board 2>&1 | grep -P "(301|Location)"

@@ -1,0 +1,25 @@
+# Archlinux
+
+## Test if firmware need to be updated
+
+List all devices detected by fwupd:
+
+`sudo fwupdmgr get-devices`
+
+Download latest metadata from LVFS:
+
+`sudo fwupdmgr refresh`
+
+List updates available for any devices on the system:
+
+`sudo fwupdmgr get-updates`
+
+Install updates:
+
+`sudo fwupdmgr update`
+
+# Debian
+
+## test if server need reboot after upgrade
+
+`ls /var/run/reboot-required`

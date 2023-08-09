@@ -1,0 +1,5 @@
+# Permet de dire que la taille est interne est pas externe, permet d'éviter de foutre le bordel...
+```
+* {
+box-sizing: border-box;
+}

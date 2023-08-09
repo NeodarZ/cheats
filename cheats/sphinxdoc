@@ -1,0 +1,24 @@
+# Add a strike html component
+
+In conf.py file:
+
+```
+rst_prolog = """
+.. role:: strike
+"""
+```
+
+Extend the layout theme template `layout.html` with:
+
+```
+{% extends "!layout.html" %}
+{% set css_files = css_files + ["_static/style.css"] %}
+```
+
+In the `style.css`:
+
+```
+.strike {
+  text-decoration: line-through;
+}
+```

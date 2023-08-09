@@ -1,0 +1,29 @@
+# Apphook theme integration
+
+This is maybe not the best way to do this but it's work.
+
+First doc is here : http://docs.django-cms.org/en/latest/introduction/05-apphooks.html
+
+(`.` is the root of the django-cms project)
+(`myApp` is the django app to be ingreted to django-cms)
+
+Create another django app specialy for integrate the wanted django app.
+(ex: `./myApp_cms_integration/`)
+
+For apply the theme you need, in the cms app create a folder, to create a
+`templates` folder for the integrated django app.
+(ex: `./myApp_cms_integration/templates/myApp/`)
+
+Copy the base.html template of myApp django app and modify the file with this
+code:
+
+```
+{% extends "base.html" %}
+
+{% block apps %}
+# Here come all the code from the base.html of myApp (In this example)
+{% endblock %}
+```
+
+You also need to add somewhere in the template of the django-cms project
+`{% block apps %}{% endblock %}`.

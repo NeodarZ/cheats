@@ -1,0 +1,17 @@
+# https://github.com/google/woff2
+# Permet de générer un woff2
+woff2_compress mafont.ttf
+
+# https://github.com/ananthakumaran/webify
+# Permet de générer un woff sans EOT et SVG car il le fait par défaut
+webify mafont.ttf ---no-eot --no-svg
+
+# https://github.com/hanikesn/woff2otf
+# Permet de génener un ttf à partir d'un woff
+./woff2otf.py font.woff font.otf
+
+# En une seul ligne
+$font=mafont.ttf; woff2_compress $font; webify $font --no-eot --no-svg
+
+# Css tips:
+If webfont is loaded with "?xxxxx" at the end of the file, the "xxxxx" must be changed.

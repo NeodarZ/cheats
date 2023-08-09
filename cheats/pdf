@@ -1,0 +1,4 @@
+# convert to pdf
+# security risc : https://bugs.archlinux.org/task/60580 because of https://bugs.archlinux.org/task/59778
+# for enable remove 'PDF' from : /etc/ImageMagick-7/policy.xml
+<policy domain="coder" rights="none" pattern="{PS,PS2,PS3,EPS,PDF,XPS}" />

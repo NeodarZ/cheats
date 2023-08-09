@@ -1,0 +1,2 @@
+# List all file who are 3 digit and follow by M like 300M
+du -sh ~/Downloads/* | grep -P "^[0-9]{3}M.*"

@@ -1,0 +1,9 @@
+# dep
+- python3-dev
+- virtualenvwrapper
+
+mkvirtualenv --python=/usr/bin/python3 oscar
+
+pip install djangocms-installer
+
+python manage.py runserver 0.0.0.0:8000

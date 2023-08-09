@@ -1,0 +1,5 @@
+# Switch to another user account
+su USERNAME
+
+# Login to an account with special shell
+su - <user> -s /bin/bash

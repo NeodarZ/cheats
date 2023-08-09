@@ -1,0 +1,19 @@
+# Prepare folder for images
+
+mkdir ~/.qemu_imgs
+
+# Creating hard disk
+
+qemu-img create -f qcow2 ~/.qemu_imgs/image_file.cow 4G
+
+# Install operating system
+
+qemu-system-x86_64 -cdrom ~/Download/image.iso -boot order=d -drive file=/home/<user>/.qemu_imgs/image_file.cow,format=qcow2
+
+tips: Get the mouse after grabbed by qemu: Ctrl+Alt+g
+
+# sous le coude
+# convertion d'une image du browser de crosoft pour des tests de siteweb par exemple avec un  windows dedans
+
+qemu-img convert -O qcow2 MSEdge\ -\ Win10.vhdx msedge.qcow2
+qemu-system-x86_64 -m 4G msedge.qcow2

@@ -1,0 +1,28 @@
+# Display process startup time
+systemd-analyze
+
+# Display process startup time at service level
+systemd-analyze blame
+
+# List running units
+systemctl list-units
+
+# Load a unit at startup
+systemctl enable foo.service
+
+# Start or Stop a unit
+systemctl <start | stop> foo.service
+
+# Unit file locations
+/etc/systemd/system
+/usr/lib/systemd/system
+
+# Manage service with battery status
+ConditionACPower=
+
+True is AC connecter and false if on battery.
+
+# Modify unit file without altering upstring unit file
+# Source: https://serverfault.com/questions/840996/modify-systemd-unit-file-without-altering-upstream-unit-file
+Use commande `systemctl edit --full <unit>` for example
+For `--user` : `systemctl edit --full <unit>`

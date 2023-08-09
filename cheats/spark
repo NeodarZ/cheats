@@ -1,0 +1,417 @@
+Got any wicked cool usage of spark up your sleeve? Drop your code snippets here.
+
+### Add a sparkline "header" to your terminal ([@jaybosamiya](https://github.com/jaybosamiya/))
+
+Shows a random sparkline at the top of your terminal each time you clear. Use the `lolcat` version if you want a rainbow coloured line
+
+```sh
+alias clear='clear; echo; echo; seq 1 $(tput cols) | sort -R | spark; echo; echo'          # Non coloured
+alias clear='clear; echo; echo; seq 1 $(tput cols) | sort -R | spark | lolcat; echo; echo' # Coloured
+```
+
+### Display precipitation data from [forecast.io](http://forecast.io) ([@davidcelis](https://github.com/davidcelis/))
+
+Show the intensity of oncoming precipitation for the next hour. This requires an [API Key for forecast.io](http://developer.forecast.io), as well as `jq` and `whereami` (`brew install jq whereami`).
+
+```sh
+curl -Ss https://api.forecast.io/forecast/$FORECAST_API_KEY/$(whereami) |
+    jq ".minutely.data[].precipIntensity * 1000" |
+    spark
+▅▇█▆▄▃▃▂▂▂▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁▁
+```
+
+### Display stock data for S&P 500 ([@arawde](https://github.com/arawde))
+You can replace ^GPSC with other symbols (GOOG, etc), and it should work the same. -A 31 gets one month after given date. Dividing field 5 by varying numbers scales the graph to more readable form.
+```sh
+curl http://www.optiontradingtips.com/resources/historical-data/sp500/%5EGSPC.TXT --silent |
+    grep "20100331" -A  31 |
+    awk -F' ' '{print $5/20}' |
+    spark
+```
+### Record how much time you spend on daily practice (guitar, etc.) ([@dbalatero](https://github.com/dbalatero))
+
+Add this script to your `$PATH`: https://gist.github.com/dbalatero/6443380
+
+```sh
+practice record 120   # 2 hours, today
+practice | spark   # dump out graph
+```
+
+### Number of commits in a repo, by author ([@holman](https://github.com/holman))
+```sh
+git shortlog -s |
+    cut -f1 |
+    spark
+```
+
+### Number of commits in a repo, by author, over time plus consistent scaling ([@kablamo](https://github.com/kablamo))
+
+Usually, you cannot compare spark graphs, because the scale not consistent between any two graphs.  [git-spark](https://github.com/kablamo/git-spark) solves this problem with its --scale option.
+
+        git spark --days 14 Stegosaurus
+        Commits by Stegosaurus over the last 14 days
+        total: 95   avg: 7   max: 23
+        10 15 6 23 5 0 0 1 15 0 17 3 0 0
+        ▄▅▂█▂▁▁▁▅▁▆▁▁▁
+
+### Total run time of processes ([@daveycrockett](https://github.com/daveycrockett))
+```bash
+ps -e | 
+    tail -n +2 | 
+    cut -c 16-23 | 
+    sed -e "s/$/))))/" -e "s/:/ + (60 * (/" -e "s/:/ + (60 *(/" | 
+    bc | 
+    spark
+```
+
+### Letter frequencies in a text file ([@daveycrockett](https://github.com/daveycrockett))
+```bash
+cat <file> | 
+    awk -vFS="" '{for(i=1;i<=NF;i++){ if($i~/[a-zA-Z]/) { w[tolower($i)]++} } }END{for(i in w) print i,w[i]}' | 
+    sort |
+    cut -c 3- |
+    spark
+```
+
+### Users' login time since last reboot ([@ghedamat](https://github.com/ghedamat))
+
+```bash
+  # get users for a specific group
+  # needs to be improved 
+  users=$(getent group uquota | cut -d ':' -f 4 | tr ',' '\n')
+  gr=""
+  for i in $users
+    do
+    gr="$gr$(last | sort | grep $i | cut -c 67-71 | tr ":" " " | awk 'BEGIN {sum=0;  } {sum += $1*60+$2; } END { print sum}'),"
+  done
+  spark $gr
+```
+
+### Number of HTTP requests per day ([@Eyjafjallajokull](https://github.com/Eyjafjallajokull))
+
+```bash
+cat /var/log/nginx/access.log | 
+    cut -d\  -f 4 | 
+    cut -d/ -f 1 | 
+    uniq -c | 
+    awk '{print $1}'| 
+    spark
+```
+
+### Histogram of commits throughout the day by author ([@vrish88](https://github.com/vrish88))
+```bash
+git log --pretty=format:'%an: %at' --author="Bob" |
+    awk '{system("date -r "$NF" '+%H'")}' |
+    sort |
+    uniq -c |
+    ruby -e 'puts STDIN.readlines.inject(Hash[Array("00".."23").map{|x| [x,0]}]) {|h, x| h.merge(Hash[*x.split(" ").reverse])}.sort.map(&:last)' |
+    spark
+```
+
+### Visualize your hg commit history ([@sunng87](https://github.com/sunng87))
+
+I wrote a [hg extension](https://gist.github.com/1366606) to aggregate commits by week and generate summary for spark.
+
+```bash
+hg summary | spark
+```
+
+### Silly example of random data
+```bash
+seq 0 100 | sort -R | spark
+```
+
+### Print a Git participation graph of last 52 weeks like in GitHub ([@shurizzle](https://github.com/shurizzle))
+```ruby
+#!/usr/bin/env ruby
+
+require 'ruby-let'
+
+class Time
+  def week
+    strftime('%U').to_i
+  end
+end
+
+puts IO.popen('spark', 'w+') {|f|
+  f.write Time.now.let {|now, min=(now - 31536000)|
+    `git log --pretty=format:'%an: %at'`.split(/\r?\n/).map {|line|
+      Time.at(line.split(' ').last.to_i).let {|c|
+        ((c.year == min.year && c.week >= min.week) || (c.year == now.year && c.week <= now.week)) ? c : nil
+      }
+    }.compact.group_by {|x| x.strftime('%G%U') }.inject({}) {|res, (k, v)|
+      res[k] = v.size
+      res
+    }.let {|act|
+      (0...52).map {|i|
+        act[(min + 604800 * i).strftime('%G%U')] || 0
+      }.join(',')
+    }
+  }
+  f.close_write
+  f.read
+}
+```
+
+### Beijing Air Quality Index, PM2.5 ([@freewizard](https://github.com/freewizard), updated by [@djbender](https://github.com/djbender))
+#### Note: No longer working, because the Twitter v1 API is no longer active.
+```bash
+curl -s https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=beijingair | 
+    grep /description | 
+    perl -nle "print \$1 if /PM2.5;[^;]+; (\d+)/" | spark
+```
+
+### One more Git related: commits for last 2 weeks
+```bash
+for day in $(seq 14 -1 0); do
+    git log --before="${day} days" --after="$[${day}+1] days" --format=oneline |
+    wc -l
+done | spark
+```
+
+### (Based on above) Git commits over the last 8 hours for a given author (~ today's activity) ([@trisweb](https://github.com/trisweb))
+```sh
+for hour in $(seq 8 -1 0); do 
+    git log --author "Author Name" --before="${hour} hours" --after="$[${hour}+1] hours" --format=oneline | 
+    wc -l;
+done | spark
+```
+
+### Changes in LOC per Git commit ([@eush77](https://github.com/eush77))
+
+```sh
+git log --stat |ack '^ \d' |cut -f5,7 -d' ' |tr ' ' '+' |bc |tac |spark
+```
+
+### Visualize filesize inside a directory([@lemen](https://github.com/lemen))
+```bash
+    du -BM * | 
+    cut -dM -f1 | 
+    spark
+```
+
+### Animation and colors with [Lolcat](https://github.com/busyloop/lolcat) ([@secondplanet](https://github.com/secondplanet))
+
+```bash
+spark 1 18 9 4 10 | lolcat -p 0.5 # Colored graph
+spark 1 18 9 4 10 | lolcat -a # Animated rainbow graph
+```
+
+### Visualize users created by week on a rails project [Caleb Thompson](https://github.com/calebthompson)
+```bash
+    bundle exec rails r "User.all.group_by{|u| u.created_at.strftime('%W')}.sort.each{|w,u| puts u.count}" |
+    spark
+```
+
+### WiFi link quality ([@cryptix](https://github.com/cryptix))
+```bash
+   if [ $(ifconfig wlan0 | grep UP | wc -l) -eq 1 ]
+   then
+     _linkQual="`iwconfig wlan0 | grep Quality | cut -d'=' -f2 | cut -d' ' -f1 | cut -d'/' -f1`"
+ 
+     if [ $_linkQual -gt 52 ] # >75% link qual
+     then
+       _linkSparked=$(spark 1 2 3 4)
+     elif [ $_linkQual -gt 35 ] # >50% link qual
+     then
+       _linkSparked=$(spark 1 2 3 0)
+     elif [ $_linkQual -gt 17 ] # 25% link qual
+     then
+       _linkSparked=$(spark 1 2 0 0)
+     elif [ $_linkQual -gt 7 ] # 25% link qual
+     then
+       _linkSparked=$(spark 1 0 0 0)
+     else # < 25%
+       _linkSparked=$(spark 0 0 0 0)
+     fi
+
+     echo $_linkSparked
+   fi
+```
+
+### Load average ([@tsujigiri](https://github.com/tsujigiri))
+
+```bash
+echo "$(cat /proc/loadavg | cut -d ' ' -f 1-3) $(egrep -c '^processor' /proc/cpuinfo)00 0" | sed 's/\(0\.\|0\.0\|\.\)//g' | spark | tail -n 1 | cut -b 1-9
+```
+
+### Load history from `atop`
+
+```
+atop -P CPL -b 16:00 -e 18:00 -r /var/log/atop/atop_20130215 | 
+   grep -v SEP | 
+   awk '{print $8}' | 
+   spark
+```
+### Memory usage ([@tsujigiri](https://github.com/tsujigiri))
+
+```bash
+total=$(grep 'MemTotal' /proc/meminfo | egrep -o '[0-9]+')
+not_apps=0
+for mem in $(egrep '(MemFree|Buffers|Cached|Slab|PageTables|SwapCached)' /proc/meminfo | egrep -o '[0-9]+'); do
+  not_apps=$((not_apps+mem))
+done
+spark $((total-not_apps)) $total 0 | tail -n 1 | cut -b 1-3
+```
+
+### Current SVN status in your prompt ([Evan Powell](https://github.com/epowell))
+svnstatgraph.sh:
+```bash
+if [ -d .svn ]; then
+    GRAPH=`svn stat | awk '{ split($0, a, " ")  arr[a[1]]++ }END{ print arr["M"] ? arr["M"] : "0", arr["A"] ? arr["A"] : "0", arr["?"] ? arr["?"] : "0", arr["D"] ? arr["D"] : "0", arr["!"] ? arr["!"] : "0" }' | spark`
+    # More descriptive prompt:
+    #echo "[MA?D!|$GRAPH]"
+    echo "[$GRAPH]"
+fi
+```
+
+~/.bashrc:
+```bash
+PS1 = '<your_prompt_here>`svnstatgraph.sh`\$'
+```
+
+
+### Visualize bubble sort ([@onesuper](https://github.com/onesuper))
+```
+#!/bin/bash
+
+array=(4 3 2 5 1)
+arrayLen=${#array[@]}
+
+for ((j=0; j<$arrayLen-1; j++)); do
+    for ((i=0; i<$arrayLen-$j-1; i++)); do
+        if [ "${array[$i]}" -gt "${array[$i+1]}" ]; then
+            temp=${array[$i]}
+            array[$i]=${array[$i+1]}
+            array[$i+1]=$temp
+        fi
+        spark ${array[@]}
+    done
+    echo '---------------------'
+done
+```
+
+### Visualize ping times ([@jnovinger](https://github.com/jnovinger))
+```ping -c 10 google.com | tee >(grep "bytes from" | cut -d " " -f 8 | cut -d "=" -f 2 | spark)```
+
+Or perhaps
+```ping -c 10 google.com | tee >(grep -oP 'time=\K\S*' | spark)```
+
+### Show ping times to a bunch of hosts with [fping](https://github.com/schweikert/fping) ([@joshuar](https://github.com/joshuar))
+
+```fping -C 5 -q google.com gmail.google.com drive.google.com plus.google.com 2>&1 | awk '{print int($3)}' | xargs spark```
+
+### Show stats of commits per day by given author ([@kstep](https://github.com/kstep))
+```git log --author="Author Name" --format=format:%ad --date=short | uniq -c | awk '{print $1}' | spark```
+
+### Disk file usage ([@gfelisberto](https://twitter.com/gfelisberto))
+```df -P -x devtmpfs -x tmpfs | grep dev | awk '{print $5}' | sed s'/.$//' | spark```
+
+### Hourly wind speed data from an NOAA buoy, by author ([@efg34](https://github.com/efg34))
+```curl -s http://www.ndbc.noaa.gov/station_page.php?station=wpow1 | grep "<tr bgcolor=\"#f" | awk -F\<td\> '{print $6}' | cut -c -5 | spark```
+
+### Weather via http://openweathermap.org ([@leoboiko](https://github.com/leoboiko))
+
+```bash
+#!/bin/bash
+# dumb json "parsing", could be better with jshon or similar
+city="São Paulo,BR" # city="$1"
+cityid=$(wget -q -O - "http://openweathermap.org/data/2.1/find/name?q=$city" \
+  | python -mjson.tool \
+  | sed -n -e 's/.*\<id.: *\([0-9]*\).*/\1/p' \
+  | head -n 1)
+
+
+wget -q -O - "http://openweathermap.org/data/2.1/history/city/?id=$cityid&cnt=80" \
+  | python -mjson.tool \
+  | sed -n -e "s/.*\<temp.: *\\(([0-9.]*\)).*/\1/p" \
+  | spark
+```
+
+
+### Zabbix API history graph results ([@christianchristensen](https://github.com/christianchristensen))
+
+(more info: https://gist.github.com/christianchristensen/7406950)
+
+```bash
+curl -s -H 'Content-type: application/json' https://www.zabbix.org/zabbix/api_jsonrpc.php -d '{ "jsonrpc": "2.0", "method": "history.get", "params":{ "output":"extend", "history":0, "time_from":"1384134836", "time_till":"1384138446", "itemids":["16"] }, "id": 123,"auth":"ac905749516dd173668f3dbf7b0cac0a" }' \
+| grep -o "\"value\":\"[0-9\.]*\"," \
+| awk -F\" '{print $4*100}' \
+| spark
+▃▄▃▂▃▂▁▁▃▃▂▂▂▁▂▁▄▂▄▄▃▁▂▂▂▂█▇▅▃▂▂▃▂▃▂▁▁▁▅▅▆▄▂▁▁▂▄▄▂▄▂▁▁▃▁▂▂▁▁
+```
+
+### A moving wave through the terminal ([@lemen](https://github.com/lemen))
+
+```bash
+function sine_wave() {
+	
+	i=0
+	while true
+	do 
+		SIN=$(python -c "from math import *;print map( lambda x: ceil(6*sin((x+$i)*pi/5)), range($(tput cols)) )" | tr -d '[]' | spark)
+		echo -ne $SIN\\r 
+		let i=i+1
+		sleep 0.05
+	done
+	echo
+}
+```
+
+### UptimeRobot response time ([@dlc](https://github.com/dlc))
+```bash
+$ curl -sS "http://api.uptimerobot.com/getMonitors?apiKey=${UPTIMEROBOT_TOKEN}&format=xml&responseTimes=1&monitors=${MON_ID}" | \
+  xmllint --xpath '//responsetime/@value' - | \
+  tr -c '0-9 ' "\n" | \
+  grep -v "^$" | \
+  head -n $COLUMNS | \
+  spark 
+▃▇▁▂▄▃▂▂▅▁▂█▃▂▃▃▃▁▂▂▃▂▅▁▁▁▃▂▁▃▂▁▄▁▁▃▂▆▁▃▃▃▁▁▃▁▁▂▄▅▅▄▂▂▃▁▄▂▃▁
+
+```
+
+### Bitcoin value over the last 24 hours ([@monkeyinmysoup](https://gist.github.com/monkeyinmysoup))
+
+Python script in [this Gist](https://gist.github.com/monkeyinmysoup/ce0b28ef337aec01d1ea).
+
+
+### Keen IO [open data set](https://github.com/keenlabs/open-data-collectors) visualization ([@dzello](https://github.com/dzello))
+
+```
+# Bitcoin value over the last 30 minutes
+$ gem install keen-cli
+$ keen average \
+  --project 53f3a8687d8cb95095000001 \
+  --collection bitcoin-prices \
+  --target-property "USD.averages.last" \
+  --timeframe last_30_minutes \
+  --interval minutely \
+  --read-key 99a06e48fd7fb1279bc40995160eb0b61a9e0efaab8b651b029f0d895f77c0a804ba089282eff28bf8ad07f337422441d0542b7feaac9fea1e92fc153ee7efc51afad3276bda8d7754a338b349d540bfb402cba0dfdc82498c217054efd8abd0f47a0c0bc963bbdf0dc938c91b17d9f2 \
+  --spark | spark
+▁▂▂▂▂▂▂▂▁▁▁▂▂▂▂▄▄▂▂▄▄▂▂▄▆█████
+```
+
+### Visualize streaming data with a scrolling spark line.([@iandow)](https://github.com/iandow)
+Save this script as scroll.sh and invoke with `./scroll.sh datafile`.
+
+```
+#!/bin/bash
+while true; do
+    printf "%${COLUMNS}s"
+    echo -ne "\r"
+    tail -n $(tput cols) $1 | spark | tr -d "\n"
+    echo -ne "\r"
+    sleep 1
+done
+```
+
+
+### Monitor Bitcoin price ([@overtorment](https://github.com/overtorment/))
+
+Monitor Bitcoin price in hourly popups via crontab
+
+```sh
+1 * * * * curl https://www.bitstamp.net/api/v2/ticker/btcusd/ 2>/dev/null  | sed  's/\,/\n/g' | grep last | awk  -F':' '{print $2}'  | sed 's/\"//g' >> ~/btcusd
+2 * * * * export DISPLAY=:0; cat ~/btcusd | tail -n 23  | /usr/local/bin/spark | xargs /usr/bin/notify-send -t 30000 "btc/usd change graph (hourly)"
+```
+

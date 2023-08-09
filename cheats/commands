@@ -1,0 +1,60 @@
+# For start a comands without aliased arguments
+\<command>
+
+# Moving in cli
+
+  +----(1)----------------+----------(2)-----+  -+
+  |  +-(3)----------------+----------(4)-+   |   |- Moving
+  v  v               (5)v-+-v(6)         v   v  -+
+$ cp monfidefoudefoudefou[c]hieffffffffffr dir
+     <----------------(7)-+-(8)---------->     -+
+                                                |- Erasing
+  <-------------------(9)-+-(10)-------------> -+
+
+
+(1) => Ctrl+A : Move from cursor to start of line
+(2) => Ctrl-E : Move from cursor to end of line
+(3) => Ctrl-B : Move from cursor to start of word
+(4) => Alt-F : Move from cursor to end of word
+(5) => Ctrl-B : Move from cursor to previous char
+(6) => Ctrl-F : Move from cursor to next char
+(7) => Ctrl-w : Erase from cursor to the start of word
+(8) => Alt-D : Erase from cursor to the end of word
+(9) => Ctrl-U : Erase from cursor to the start of line
+(10) => Ctrl-K : Erase from cursor to the end of line
+
+# Useful non default command
+
+## Better ls
+https://github.com/ogham/exa
+
+```
+exa
+```
+
+## Better cat
+https://github.com/sharkdp/bat
+
+```
+bat
+```
+
+## Fuzzy search file
+
+```
+fzf
+```
+
+## Better find
+https://github.com/sharkdp/fd
+
+```
+fd
+```
+
+## Ctop -  Top-like interface for container metrics 
+https://github.com/bcicen/ctop
+
+```
+ctop
+```

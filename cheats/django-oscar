@@ -1,0 +1,17 @@
+#Dep for stretch:
+- libpq-dev
+- python3-dev
+
+# for mkvirtualenv
+- virtualenvwrapper
+
+# DONT FORGET DO UPGRADE PIP !!!!
+pip3 install -U setuptools pip
+
+mkvirtualenv --python=/usr/bin/python3 oscar
+
+# for pillow
+- libjpeg-dev
+pip3 install pillow
+
+sandbox/manage.py runserver 0.0.0.0:8000

@@ -1,0 +1,2 @@
+sudo socat /dev/ttyACM0,b115200 - | tee /tmp/a | ./livehex
+tail -f /tmp/a

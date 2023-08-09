@@ -1,0 +1,2 @@
+# Update .Xresources file
+xrdb -merge ~/.Xresources

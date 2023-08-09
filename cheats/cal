@@ -1,0 +1,26 @@
+# Auto update all agandas
+
+## vdirsync
+
+Just enable user service vdirsyncer.timer
+/!\ Update 5 min after start and 15min after first vdirsync update
+
+## ikhal
+
+Create a ikhal service with the following content:
+
+```
+[Unit]
+Description=Update khal's cache
+Documentation=man:khal(1)
+After=vdirsyncer.service
+RefuseManualStart=true
+
+[Service]
+ExecStart=/usr/bin/khal
+Type=oneshot
+StandardOutput=null
+
+[Install]
+WantedBy=vdirsyncer.service
+```

@@ -1,0 +1,2 @@
+# Modofy acl on a folder recusivly
+setfacl -Rm u:neodarz:rxw <dir>

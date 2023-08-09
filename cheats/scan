@@ -1,0 +1,3 @@
+# Scanner un document écrit au crayon de bois
+
+scanimage --format=png --output-file test.png --mode Gray --brightness 500 --contrast 500 --resolution 300

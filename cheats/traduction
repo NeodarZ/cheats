@@ -1,0 +1,2 @@
+# Compil po file
+msgfmt fr_FR.po -o fr_FR.mo

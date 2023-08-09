@@ -1,0 +1,50 @@
+# Make a migration
+change model in models.py
+python manage.py makemigrations
+python manage.py migrate
+
+#Django source code
+python -c "import django; print(django.__path__)"
+
+# Enable virtual env:
+mkvirtualenv --python=/usr/bin/python3 oscar
+
+# Don't forget to install
+pip install django
+
+# Run dev server
+python manage.py runserver 127.0.0.1:8000
+
+# tinymce for django
+https://github.com/romanvm/django-tinymce4-lite
+
+# For create a .po file for translation
+# first create a locale folder in module folder or edit LOCALE_PATH in conf file
+
+# run command for generate the file
+django-admin makemessages -l fr
+
+# update the file if there are new translation
+django-admin makemessages -l fr
+
+# compil translations files
+django-admin compilemessages
+
+# Pour tester avec debug=False et manage.py runserver
+source : https://stackoverflow.com/a/49722734
+
+In urls.py I added this line:
+
+```
+from django.views.static import serve 
+```
+
+add those two urls in urlpatterns:
+
+```
+url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}), 
+url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}), 
+```
+
+and both static and media files were accesible when DEBUG=FALSE.
+Hope it helps :)

@@ -1,0 +1,5 @@
+# Tool for get info on disks
+lsscsi
+
+# If LSILOGIC use:
+storcli

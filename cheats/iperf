@@ -1,0 +1,1 @@
+iperf3 -p 5200 -c ping.online.net ; iperf3 -p 5200 -c ping.online.net -R

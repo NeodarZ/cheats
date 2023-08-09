@@ -1,0 +1,38 @@
+# Generate certs for localhost + some addresses
+mkcert -cert-file localhost.pem -key-file localhost.key.pem localhost $(/sbin/ip -4 -o addr | /usr/bin/awk '{gsub(/\/.*/,"",$4); print $4}' | /usr/bin/sed ':a;N;$!ba;s/\n/ /g') <addresses>
+
+# Auto generate cert from current apache conf and current ip addresses
+
+#!/usr/bin/python3
+import re
+from subprocess import call
+import netifaces as ni
+import shutil
+
+url = []
+
+# Search for all servername enable in apache conf
+file = open("/etc/httpd/conf/httpd.conf")
+for line in file:
+    if re.search("^Include", line):
+        conf = open("/etc/httpd/"+line.split()[1])
+        for conf_line in conf:
+            if re.search("^    ServerName", conf_line):
+                if conf_line.split()[1] not in url:
+                    url.append(conf_line.split()[1])
+        conf.close()
+file.close()
+
+# Add localhost
+if "localhost" not in url:
+    url.append("localhost")
+
+# Get all current ip
+for interfaces in ni.interfaces():
+    ip = ni.ifaddresses(interfaces)[ni.AF_INET][0]['addr']
+    if ip not in url:
+        url.append(ip)
+
+call(["mkcert", "-cert-file", "localhost.pem", "-key-file", "localhost.key.pem"] + url)
+shutil.move("localhost.pem", "/etc/ssl/certs/localhost.pem")
+shutil.move("localhost.key.pem", "/etc/ssl/certs/localhost.key.pem")

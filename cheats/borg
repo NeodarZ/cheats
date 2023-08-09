@@ -1,0 +1,23 @@
+# init
+borg init --encryption=repokey /path/to/repo
+
+# first commit
+borg create /path/to/repo::Monday ~/src ~/Documents
+
+# update archive
+borg create --stats /path/to/repo::Tuesday ~/src ~/Documents
+
+# For archive name with data instead of simple name
+borg create /Backups/Docs_importants::{now:%Y-%m-%d-%H:%M:%S.%f} ~/Docs_importants
+
+# Example
+borg create -C lzma,6 ~/Backups/Docs_importants::{now:%Y-%m-%d-%H:%M:%S.%f} ~/Docs_importants
+
+# Tips
+borg save fullpath, so if already in subfolder, remove some leading path elements
+with `strip-components`. Exemple:
+
+borg extract --strip-components 3 ~/Backups/Docs_importants::2018-07-01-13:29:05.247461
+
+# compression
+lz4 < zstd < zlib < lzma

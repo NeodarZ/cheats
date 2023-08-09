@@ -1,0 +1,78 @@
+# Desc: Python is a high-level programming language.
+
+# Basic example of server with python
+# Will start a Web Server in the current directory on port 8000
+# go to http://127.0.0.1:8000
+
+# Python v2.7
+python -m SimpleHTTPServer
+# Python 3
+python -m http.server 8000
+
+# SMTP-Server for debugging, messages will be discarded, and printed on stdout.
+python -m smtpd -n -c DebuggingServer localhost:1025
+
+# Pretty print a json
+python -mjson.tool
+
+# Generate requirements.txt
+pipreqs /path/to/project
+
+# Tips
+# Ressources available in : cheat python_ressources
+
+Input: décoder avec `decode()`.
+Output: encoder avec `encode('utf-8')`
+
+lors de l'ouverture d'un fichier:
+```
+from codecs import open
+ 
+# open() de codec à exactement la même API, y compris avec "with"
+f = open('fichier', encoding='encoding')
+```
+
+# Types
+
+bytes == bytearray
+
+# non mutable (non modifiable)
+bytes
+tuple
+
+# mutable (modifiable)
+bytearray
+
+# For bytes and bytearray show hex value of each char
+[hex(i) for i in header]
+
+# For string show hex value of each char
+[hex(ord(c)) for c in header]
+
+# Opencv with gstreamer
+# Gstreamer not on pipy but present when building...
+
+git clone --recursive https://github.com/skvark/opencv-python.git
+git checkout -b 25
+ENABLE_CONTRIB=ON python setup.py install
+
+# package developement
+
+virtualenv .venv_dev
+source .venv_dev/bin/activate
+pip install -e . # for install package in dev mode
+
+# virtualenv with custom python version
+
+mkvirtualenv projectpy2 --python=python2.7
+
+# debug tool
+
+A powerful set of Python debugging tools, based on PySnooper:
+https://github.com/alexmojaki/snoop
+
+Full-screen console debugger for Python
+https://github.com/inducer/pudb
+
+pdb++, a drop-in replacement for pdb (the Python debugger)
+https://github.com/pdbpp/pdbpp

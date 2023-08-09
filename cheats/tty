@@ -1,0 +1,5 @@
+Message d'erreur : Cannot open your terminal '/dev/pts/0' - please check.
+C'est parceque un autre utilisateur (soit même) à initié le terminal
+actuel - Problament en utilisant `sudo su` pour lancer screen.
+Pour régler le problème sans se connecter avec le bon user : script /dev/null
+plus d'info : https://serverfault.com/questions/116775/sudo-as-different-user-and-running-screen/116830#116830

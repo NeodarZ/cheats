@@ -1,0 +1,3 @@
+# bitcoin
+
+echo $(clikraken bal | grep XBT | awk '{print $2}')"*"$(clikraken t | grep XBTEUR | awk '{print $2}') | bc

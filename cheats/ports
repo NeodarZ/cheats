@@ -1,0 +1,9 @@
+#Trouver un port sans utiliser internet mais le système linux installé
+#/etc/services Liste les ports par defauts utilisé
+
+# Pour avoir des infos sur les entrées de tels ou tels service
+# La configuration ce trouve: /etc/nsswitch.conf
+getent
+# Ex:
+getent services 80
+

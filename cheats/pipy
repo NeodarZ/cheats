@@ -1,0 +1,21 @@
+# Fist check if pbr package is installed (if use tag for set version)
+pip install pbr
+
+# Install necessary package for compil
+python -m pip install --user --upgrade setuptools wheel
+
+# Build the package
+python setup.py sdist bdist_wheel
+
+# For upload install necessary package
+pip install twine
+
+# upload new version of a package
+pip install artedv_dl
+
+# upload on test server
+twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+
+# install from test server
+python3 -m pip install --index-url https://test.pypi.org/simple/ example_pkg
+

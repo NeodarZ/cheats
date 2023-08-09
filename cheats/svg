@@ -1,0 +1,17 @@
+# CSS
+
+`background-image: url("data:image/svg+xml;charset=utf8,<svg [...]");`
+
+Don't use `#` but `%23`.
+
+# svg inline
+Source de l'idée: https://stackoverflow.com/a/33833561
+
+Pour inclure svg en mode inline mais sans l'avoir en mode sale ds
+le code il faut l'inclure ds le template.
+
+Par exemple sous django possibilité de faire:
+
+```
+{% include 'file.svg' %}
+```

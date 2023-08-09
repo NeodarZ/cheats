@@ -1,0 +1,43 @@
+# Autotype:
+autotype: user :tab pass :enter
+
+# check if pawned
+
+Python de Dropper:
+```
+import urllib2
+import hashlib
+ 
+CLEAN = 0
+PWNED = 1
+ERROR = -1
+ 
+def check_password(password):
+    m = hashlib.sha1()
+    m.update(password.encode('utf-8'))
+    hx = m.hexdigest().upper()
+ 
+    headers = {
+        'User-Agent': 'pass-check',
+        'api-version' : '2'
+    }
+ 
+    try:
+        req = urllib2.Request('https://api.pwnedpasswords.com/range/' + hx[:5], headers=headers)
+        response = urllib2.urlopen(req)
+        for line in response.read().splitlines():
+            if hx[5:] == line.split(":")[0]:
+                return PWNED
+        return CLEAN
+ 
+    except:
+        return ERROR
+ 
+if __name__ == '__main__':
+    if check_password("Password1") == PWNED:
+        print("PWNED !")
+    else:
+        print("MAYBE")
+```
+
+https://gitlab.com/darnir/pass-audit

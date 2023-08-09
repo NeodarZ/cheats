@@ -1,0 +1,39 @@
+# Admin user full
+use admin
+db.createUser({user:"admin", pwd:"admin", roles: ["userAdminAnyDatabase", "clusterAdmin", "dbAdminAnyDatabase"]})
+
+# list all dbs users
+db.system.users.find()
+
+# Create user, don't forget to use the correct database
+use <db_name>
+db.createUser({user:"root", pwd:"root", roles: ["readWrite"]})
+
+# Create use in another database:
+use madbtest
+db.createUser({user:"admin", pwd:"vIhVPwy81sdf5fPt3a2", roles: [{role: "readWrite" , db: "madbtest"}]})
+
+# udpate pwd
+db.updateUser("username", {pwd: ""})
+
+# mongoshell get schema collection 
+# Source: https://medium.com/@ahsan.ayaz/how-to-find-schema-of-a-collection-in-mongodb-d9a91839d992
+
+function printSchema(obj, indent) {
+    for (var key in obj) {
+        if(typeof obj[key] != "function"){     //we don't want to print functions
+            var specificDataTypes=[Date,Array];    //specify the specific data types you want to check
+            var type = typeof obj[key];
+            for(var i in specificDataTypes){       // looping over [Date,Array]
+                if(obj[key] instanceof specificDataTypes[i]){      //if the current property is instance of the DataType
+                        type = specificDataTypes[i].name;    //get its name
+                        break;
+                }
+            }
+            print(indent, key, type) ;    //print to console (e.g roles object is_Array)
+            if (typeof obj[key] == "object") {             //if current property is of object type, print its sub properties too
+                printSchema(obj[key], indent + "\t");
+            }
+        }
+    }
+};

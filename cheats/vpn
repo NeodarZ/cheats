@@ -1,0 +1,16 @@
+# VPN per namespace (and so per program)
+
+https://github.com/slingamn/namespaced-openvpn
+
+```
+# create an openvpn tunnel in a new namespace, named `protected` by default:
+sudo /path/to/namespaced-openvpn --config ./my_openvpn_config_file
+
+# start an unprivileged shell in the new namespace
+# anything started from this shell will use the openvpn tunnel exclusively for connectivity:
+sudo ip netns exec protected sudo -u $USER -i
+```
+
+```
+sudo systemctl start openvpn-client@neodarz-perso.service
+```

@@ -1,0 +1,6 @@
+# Close laptoper cover/lip
+
+in file /etc/systemd/logind.conf
+
+#HandleLidSwitch=suspend
+HandleLidSwitch=ignore

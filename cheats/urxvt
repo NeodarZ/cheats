@@ -1,0 +1,29 @@
+# yank url in term
+Alt+u 	Enter selection mode. The last URL on your screen will be selected. You can repeat Alt+u to select the next upward URL.
+k 	Select next upward URL
+j 	Select next downward URL
+Return 	Open selected URL in browser and quit selection mode
+o 	Open selected URL in browser without quitting selection mode
+y 	Copy (yank) selected URL and quit selection mode
+Esc 	Cancel URL selection mode 
+
+# Tab management
+Shift+Down 	New tab
+Shift+Left 	Go to left tab
+Shift+Right 	Go to right tab
+Ctrl+Left 	Move tab to the left
+Ctrl+Right 	Move tab to the right
+Ctrl+d 	Close tab 
+
+# keyboard select with meta-escape
+h/j/k/l:    Move cursor left/down/up/right (also with arrow keys)
+g/G/0/^/$/H/M/L/f/F/;/,/w/W/b/B/e/E: More vi-like cursor movement keys
+'/'/?:      Start forward/backward search
+n/N:        Repeat last search, N: in reverse direction
+Ctrl-f/b:   Scroll down/up one screen
+Ctrl-d/u:   Scroll down/up half a screen
+v/V/Ctrl-v: Toggle normal/linewise/blockwise selection
+y/Return:   Copy selection to primary buffer, Return: quit afterwards
+Y:          Copy selected lines to primary buffer or cursor line and quit
+q/Escape:   Quit keyboard selection mode
+

@@ -1,0 +1,2 @@
+# For watch size of directory
+ls -alh cd.backup | tail -1 | awk '{print $(NF-5),"\t",$(NF)}'

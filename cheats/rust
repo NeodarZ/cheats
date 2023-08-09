@@ -1,0 +1,117 @@
+# Raw identifier
+
+Nommé (identifié en rust) un concept (variable, fonction) qui est le meme mots
+qu'un mot clé rust: `r#<identifieur>`.
+
+# Shadow
+
+Fait de utilier la meme variable mais de le redacler.
+Il faut utiliser cette méthode au lorsque que l'on soite changer le type d'une
+variable mutable.
+
+Faire:
+let spaces = "   ";
+let spaces = spaces.len()
+
+Ne pas faire:
+let mut spaces = "   ";
+spaces = spaces.len()
+
+# scalar types
+
+Un type scalaire representer une seul veleur.
+
+- Integer (Signé et non-signé)
+- Integer Literals (Decimal/Hex/Octal/Binary/Byte(u8))
+- Floating-Point (Float)
+- Numeric Operation (Pas un type mais mis dedans ds le livres...)
+- Boolean `let t = true` ou `let f: bool = false`
+- Character (`char` type specified with single quotes)
+- String (`string` type specified with double quotes)
+
+# Compound type
+
+Un type "compound" regroupe différent type de valeurs en une seul.
+
+- Tuple (multi type) ex: (1, 'z', 0.9)
+- Array (same type) ex: [1, 2, 3]
+
+# for loop
+for el in array.iter() {
+    ...
+}
+
+# for loop in range
+for el in (1..4) {
+    ...
+}
+
+# for loop in range reversed
+for el in (1..4).rev() {
+    ...
+}
+
+# Ownership
+
+Chaque valeur a une variable nommé "propriétaire" ("owner")
+Il n'y peut y avoir qu'un seul proprioétaire à la fois
+Quand le proprio est hors sujet, hors champs ("out of scope") la valeur est
+supprimé
+
+# String
+
+String est mutable à l'inverse d'un string littéral.
+Pour créer un String depuis un string littéral:
+let s = String::from("hello");
+
+Pour rajouter tu texte à un String:
+s.push_str(", world");
+
+# Move
+
+Pour déplacer le pointeur d'un string d'une variable à une autre:
+let s1 = String::form("hello")
+let s1 = s2
+
+# Clone (deep copy)
+
+let s1 = String::from("hello");
+let s2 = s1.clone();
+
+# Copy (Uniquement pour les données dite de type pile)
+
+let x = 5;
+let y = x;
+
+# Types qui peuvent utiliser Copy
+- Integer
+- Boolean
+- Float
+- Characteres
+- Tuples (Only if all type can use Copy)
+
+Lorsque que l'on passe une varaible à un fonction sans utiliser de références,
+celle-ci n'est plus utilisable par la suite si elle n'est pas retourné par
+ladite fonctions.
+
+# References
+Permet de référer à une valeur sans en devenir propriétaire.
+
+Pour créer une référence il faut mettre le signe `&` avant la variable avant
+de la passer à une fonction (par exemple):
+
+let len = calculate_length(&s1);
+
+# outils
+
+voir pour `rustup` pour gérer cargo
+
+# components
+
+## clippy
+
+linter permer de donner des conseils en plus du compilateur
+
+## format
+
+permet de suivre les convetions de style

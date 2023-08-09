@@ -1,0 +1,17 @@
+# Generated a crud
+php bin/console generate:doctrine:crud
+
+# Genenrates entities
+php bin/console doctrine:generate:entities AppBundle:Film
+
+# Run dev server
+php bin/console server:run
+
+# Drop database
+php bin/console doctrine:database:drop --force
+
+# Create database
+php bin/console doctrine:database:create
+
+# Create schema
+php bin/console doctrine:schema:create

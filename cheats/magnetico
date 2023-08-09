@@ -1,0 +1,5 @@
+# Get size file discovered
+size=0; for el in $(sqlite3 ~/.local/share/magneticod/database.sqlite3 "select size from files"); do ((size+=el)); done; echo $size | awk '{ byte =$1 /1024/1024/1024; print byte " GB" }'
+
+# Get torrent number
+sqlite3 ~/.local/share/magneticod/database.sqlite3 "select count(*) from torrents"

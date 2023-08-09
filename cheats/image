@@ -1,0 +1,28 @@
+# Prepare image for the web with gimp
+
+Resources:
+- https://docs.gimp.org/en/gimp-using-web.html
+- https://logosbynick.com/gimp-reduce-file-size-png/
+
+## Optimize color palette
+
+Image > Mode > Indexed
+
+Check generate optimum palette with 35 value (255 is the default) then click on
+Convert
+
+## Lower resolution
+
+Image > Scale
+
+Set witch to 700 and then click on Scale
+
+## Remove alpha chanel
+
+Remove Alpha channel by flattering the image (Image -> Flatten Image)
+
+## Save
+
+Save in PNG format with uncheck all and best compression
+
+Don't forget to check if the final image is ok with what you want

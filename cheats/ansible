@@ -1,0 +1,11 @@
+# Troubleshoutting
+
+When the error is "Operation not permitted" when "chown: changing ownership" you
+just need to activate the following options in file `ansible.cfg`:
+
+```
+allow_world_readable_tmpfiles = True
+pipelining = True
+```
+
+Source: https://stackoverflow.com/questions/47873671/becoming-non-root-user-in-ansible-fails?rq=1

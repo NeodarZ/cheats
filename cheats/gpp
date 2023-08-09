@@ -1,0 +1,3 @@
+Export secret key
+
+gpg --export-secret-keys -a <keyid> > secret.asc

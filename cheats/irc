@@ -1,0 +1,5 @@
+# Search for me please
+rm log.txt; for i in {8..0};do echo Getting log from $(date --date="$i day ago" +"%Y-%m-%d")...; curl -s "https://khaganat.net/irc/logs/%23khanat/%23khanat.$(date --date="$i day ago" +"%Y-%m-%d").log" >> log.txt; done; pseudo="neodarz"; cat log.txt | grep -v "<$pseudo" | grep "$pseudo"
+
+# Close a buffer
+/close
